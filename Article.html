@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>L'Édition Nationale — Article (maquette fictive)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Merriweather:ital,wght@0,300;0,400;0,700;1,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  /* ============================================================
+     L'ÉDITION NATIONALE — Maquette éditoriale fictive
+     Projet étudiant / front-end. Aucune information réelle.
+     ============================================================ */
+
+  :root {
+    --bg: #fafafa;
+    --surface: #ffffff;
+    --ink: #1a1a1a;
+    --ink-soft: #3d3d3d;
+    --muted: #6b6b6b;
+    --faint: #9a9a9a;
+    --line: #e4e2dd;
+    --line-strong: #d2cfc8;
+    --accent: #9b1c1c;          /* rouge éditorial sobre */
+    --accent-dark: #7a1414;
+    --serif-display: "Lora", Georgia, "Times New Roman", serif;
+    --serif-body: "Merriweather", Georgia, serif;
+    --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    --reading: 700px;
+    --article-scale: 1;          /* piloté par les boutons A- / A+ */
+  }
+
+  * { box-sizing: border-box; }
+
+  html { -webkit-text-size-adjust: 100%; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--serif-body);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  a { color: inherit; }
+
+  img { max-width: 100%; display: block; }
+
+  ::selection { background: rgba(155, 28, 28, 0.14); }
+
+  /* ---------- Bandeau fiction ---------- */
+  .fiction-bar {
+    background: #1a1a1a;
+    color: #f3f0ea;
+    font-family: var(--sans);
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    text-align: center;
+    padding: 7px 16px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+  }
+  .fiction-bar strong { color: #fff; font-weight: 600; }
+  .fiction-bar .dot { width: 5px; height: 5px; border-radius: 50%; background: var(--accent); }
+
+  /* ---------- Header ---------- */
+  .masthead {
+    background: var(--surface);
+    border-bottom: 1px solid var(--line);
+    position: sticky;
+    top: 0;
+    z-index: 40;
+  }
+  .masthead__inner {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 0 32px;
+    height: 68px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    text-decoration: none;
+    min-width: 0;
+  }
+  .brand__logo {
+    font-family: var(--serif-display);
+    font-weight: 700;
+    font-size: 24px;
+    letter-spacing: 0.01em;
+    color: var(--ink);
+    white-space: nowrap;
+    flex: 0 0 auto;
+  }
+  .brand__logo .accent { color: var(--accent); }
+  .brand__tag {
+    font-family: var(--sans);
+    font-size: 9.5px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--faint);
+    border: 1px solid var(--line-strong);
+    border-radius: 3px;
+    padding: 3px 6px;
+    white-space: nowrap;
+    flex: 0 0 auto;
+    margin-left: 6px;
+  }
+  .nav {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--sans);
+  }
+  .nav__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 9px 12px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--ink-soft);
+    text-decoration: none;
+    border-radius: 6px;
+    transition: background 0.15s ease, color 0.15s ease;
+    cursor: pointer;
+    background: none;
+    border: none;
+  }
+  .nav__link:hover { background: #f1efea; color: var(--ink); }
+  .nav__link svg { width: 16px; height: 16px; }
+  .nav__sub {
+    background: var(--accent);
+    color: #fff;
+    font-weight: 600;
+    padding: 9px 16px;
+  }
+  .nav__sub:hover { background: var(--accent-dark); color: #fff; }
+  .nav__icon-label { }
+
+  /* ---------- Breadcrumb ---------- */
+  .breadcrumb {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 14px 32px;
+    font-family: var(--sans);
+    font-size: 12.5px;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .breadcrumb a { text-decoration: none; color: var(--muted); }
+  .breadcrumb a:hover { color: var(--accent); text-decoration: underline; }
+  .breadcrumb .sep { color: var(--faint); }
+  .breadcrumb .current { color: var(--ink); font-weight: 500; }
+
+  /* ---------- Layout ---------- */
+  .layout {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 8px 32px 80px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 300px;
+    column-gap: 72px;
+    align-items: start;
+  }
+  .col-main { min-width: 0; }
+  /* La colonne de lecture proprement dite, centrée et contrainte */
+  .reading { max-width: var(--reading); margin: 0 auto; }
+
+  /* ---------- En-tête article ---------- */
+  .article-head { padding-top: 24px; }
+  .overline {
+    font-family: var(--sans);
+    font-size: 12.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.13em;
+    color: var(--accent);
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 22px;
+  }
+  .overline::before {
+    content: "";
+    width: 26px;
+    height: 2px;
+    background: var(--accent);
+  }
+
+  h1.title {
+    font-family: var(--serif-display);
+    font-weight: 600;
+    font-size: clamp(34px, 5vw, 52px);
+    line-height: 1.1;
+    letter-spacing: -0.012em;
+    margin: 0 0 26px;
+    color: var(--ink);
+    text-wrap: balance;
+  }
+
+  .standfirst {
+    font-family: var(--serif-body);
+    font-weight: 700;
+    font-size: clamp(18px, 2.2vw, 21px);
+    line-height: 1.55;
+    color: var(--ink-soft);
+    margin: 0 0 30px;
+    text-wrap: pretty;
+  }
+
+  /* Champs éditables : indice visuel discret au survol/focus */
+  [contenteditable="true"] { outline: none; border-radius: 4px; transition: box-shadow 0.15s ease, background 0.15s ease; }
+  [contenteditable="true"]:hover { box-shadow: 0 0 0 1px var(--line-strong); }
+  [contenteditable="true"]:focus { box-shadow: 0 0 0 2px rgba(155,28,28,0.35); background: #fffdf8; }
+
+  /* ---------- Barre méta ---------- */
+  .byline {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 18px 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    font-family: var(--sans);
+  }
+  .avatar {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #d9d5cc, #b8b3a8);
+    flex: 0 0 auto;
+    display: grid;
+    place-items: center;
+    color: #fff;
+    font-weight: 600;
+    font-size: 15px;
+  }
+  .byline__meta { min-width: 0; }
+  .byline__author { font-size: 14.5px; font-weight: 600; color: var(--ink); }
+  .byline__author .role { color: var(--muted); font-weight: 400; }
+  .byline__date { font-size: 12.5px; color: var(--muted); margin-top: 2px; }
+  .byline__spacer { flex: 1; }
+
+  .tools { display: flex; align-items: center; gap: 8px; }
+  .tool-group {
+    display: flex;
+    align-items: center;
+    border: 1px solid var(--line-strong);
+    border-radius: 7px;
+    overflow: hidden;
+  }
+  .icon-btn {
+    width: 36px; height: 36px;
+    display: grid; place-items: center;
+    background: var(--surface);
+    border: none;
+    cursor: pointer;
+    color: var(--ink-soft);
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+  .icon-btn + .icon-btn { border-left: 1px solid var(--line); }
+  .icon-btn:hover { background: #f1efea; color: var(--accent); }
+  .icon-btn svg { width: 16px; height: 16px; }
+  .text-size-btn { font-family: var(--sans); font-weight: 600; font-size: 13px; width: auto; padding: 0 11px; }
+  .text-size-btn .big { font-size: 16px; }
+
+  .copied-toast {
+    position: fixed;
+    bottom: 28px; left: 50%;
+    transform: transl(-50%, 12px);
+    transform: translateX(-50%) translateY(12px);
+    background: var(--ink);
+    color: #fff;
+    font-family: var(--sans);
+    font-size: 13.5px;
+    padding: 11px 18px;
+    border-radius: 8px;
+    box-shadow: 0 8px 28px rgba(0,0,0,0.22);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.22s ease, transform 0.22s ease;
+    z-index: 80;
+  }
+  .copied-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  /* ---------- Corps ---------- */
+  .article-body {
+    font-size: calc(18.5px * var(--article-scale));
+    line-height: 1.85;
+    color: var(--ink-soft);
+    margin-top: 36px;
+  }
+  .article-body > p { margin: 0 0 28px; text-wrap: pretty; }
+  /* Lettrine sur le premier paragraphe */
+  .article-body > p.lead-para::first-letter {
+    font-family: var(--serif-display);
+    font-weight: 600;
+    float: left;
+    font-size: 3.6em;
+    line-height: 0.78;
+    padding: 6px 12px 0 0;
+    color: var(--ink);
+  }
+  .article-body h2 {
+    font-family: var(--serif-display);
+    font-weight: 600;
+    font-size: calc(25px * var(--article-scale));
+    line-height: 1.25;
+    color: var(--ink);
+    margin: 46px 0 18px;
+    letter-spacing: -0.01em;
+  }
+  .article-body a.inline { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; text-decoration-thickness: 1px; }
+
+  /* Citation mise en exergue */
+  .pullquote {
+    margin: 44px 0;
+    padding: 6px 0 6px 30px;
+    border-left: 4px solid var(--accent);
+  }
+  .pullquote p {
+    font-family: var(--serif-display);
+    font-style: italic;
+    font-weight: 500;
+    font-size: calc(25px * var(--article-scale));
+    line-height: 1.45;
+    color: var(--ink);
+    margin: 0 0 12px;
+    text-wrap: balance;
+  }
+  .pullquote cite {
+    font-family: var(--sans);
+    font-style: normal;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--muted);
+    letter-spacing: 0.02em;
+  }
+
+  /* Figure / image d'illustration */
+  figure.illus { margin: 42px 0; }
+  .illus__frame {
+    background:
+      repeating-linear-gradient(45deg, #ece9e3 0 14px, #e6e2db 14px 28px);
+    border: 1px solid var(--line-strong);
+    aspect-ratio: 16 / 9;
+    display: grid;
+    place-items: center;
+    color: var(--faint);
+    border-radius: 2px;
+  }
+  .illus__frame span {
+    font-family: var(--sans);
+    font-size: 12.5px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .illus__frame svg { width: 22px; height: 22px; opacity: 0.7; }
+  figcaption {
+    font-family: var(--sans);
+    font-size: 12.5px;
+    line-height: 1.5;
+    color: var(--muted);
+    margin-top: 10px;
+    padding-left: 2px;
+    border-left: none;
+  }
+  figcaption .credit { color: var(--faint); }
+
+  /* ---------- Sidebar ---------- */
+  .sidebar { position: sticky; top: 92px; font-family: var(--sans); }
+  .sidebar__title {
+    font-size: 12.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.11em;
+    color: var(--ink);
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--ink);
+    margin: 30px 0 4px;
+  }
+  .related-list { list-style: none; margin: 0; padding: 0; }
+  .related {
+    display: flex;
+    gap: 14px;
+    padding: 18px 0;
+    border-bottom: 1px solid var(--line);
+    text-decoration: none;
+    align-items: flex-start;
+  }
+  .related:hover .related__title { color: var(--accent); }
+  .related__thumb {
+    flex: 0 0 76px;
+    width: 76px; height: 60px;
+    border-radius: 3px;
+    background:
+      repeating-linear-gradient(45deg, #e9e6df 0 10px, #e2ded6 10px 20px);
+    border: 1px solid var(--line-strong);
+  }
+  .related__body { min-width: 0; }
+  .related__cat {
+    font-size: 10.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+    margin-bottom: 5px;
+  }
+  .related__title {
+    font-family: var(--serif-display);
+    font-size: 15.5px;
+    font-weight: 600;
+    line-height: 1.3;
+    color: var(--ink);
+    transition: color 0.15s ease;
+    text-wrap: pretty;
+  }
+  .related__time { font-size: 11.5px; color: var(--faint); margin-top: 6px; }
+
+  .sidebar__promo {
+    margin-top: 26px;
+    background: #f2efe9;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 20px;
+  }
+  .sidebar__promo h4 {
+    font-family: var(--serif-display);
+    font-size: 17px;
+    margin: 0 0 8px;
+    color: var(--ink);
+  }
+  .sidebar__promo p { font-size: 12.5px; color: var(--muted); line-height: 1.5; margin: 0 0 14px; }
+  .sidebar__promo .mini-btn {
+    display: inline-block;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--accent);
+    text-decoration: none;
+    border: 1px solid var(--accent);
+    border-radius: 5px;
+    padding: 7px 13px;
+  }
+  .sidebar__promo .mini-btn:hover { background: var(--accent); color: #fff; }
+
+  /* ---------- Encart fin d'article (abonnement) ---------- */
+  .subscribe-cta {
+    margin: 56px auto 0;
+    max-width: var(--reading);
+    background: #15110f;
+    color: #f4f0e9;
+    border-radius: 10px;
+    padding: 48px 44px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .subscribe-cta::before {
+    content: "“";
+    position: absolute;
+    font-family: var(--serif-display);
+    font-size: 240px;
+    color: rgba(255,255,255,0.05);
+    top: -70px; left: 18px;
+    line-height: 1;
+  }
+  .subscribe-cta__kicker {
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: #c98a8a;
+    margin-bottom: 16px;
+    position: relative;
+  }
+  .subscribe-cta h3 {
+    font-family: var(--serif-display);
+    font-weight: 600;
+    font-size: clamp(24px, 3vw, 31px);
+    line-height: 1.25;
+    margin: 0 auto 14px;
+    max-width: 480px;
+    position: relative;
+    text-wrap: balance;
+  }
+  .subscribe-cta p {
+    font-family: var(--sans);
+    font-size: 14.5px;
+    line-height: 1.6;
+    color: #cbc4ba;
+    max-width: 440px;
+    margin: 0 auto 26px;
+    position: relative;
+  }
+  .subscribe-cta .btn-primary {
+    position: relative;
+    display: inline-block;
+    background: var(--accent);
+    color: #fff;
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 14.5px;
+    text-decoration: none;
+    padding: 13px 30px;
+    border-radius: 7px;
+    transition: background 0.15s ease, transform 0.15s ease;
+  }
+  .subscribe-cta .btn-primary:hover { background: #b62121; transform: translateY(-1px); }
+  .subscribe-cta__note { font-family: var(--sans); font-size: 12px; color: #8f8880; margin-top: 16px; position: relative; }
+
+  /* ---------- Footer ---------- */
+  .site-footer {
+    background: #16140f;
+    color: #b9b3a8;
+    font-family: var(--sans);
+    margin-top: 72px;
+  }
+  .footer__top {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 56px 32px 40px;
+    display: grid;
+    grid-template-columns: 1.4fr repeat(3, 1fr);
+    gap: 40px;
+  }
+  .footer__brand .brand__logo { color: #f4f0e9; font-size: 22px; }
+  .footer__brand .brand__logo .accent { color: #d06a6a; }
+  .footer__brand p {
+    font-size: 13px;
+    line-height: 1.65;
+    color: #8f8a80;
+    margin: 16px 0 0;
+    max-width: 280px;
+  }
+  .footer__col h5 {
+    font-size: 11.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #efe9df;
+    margin: 0 0 16px;
+    font-weight: 600;
+  }
+  .footer__col ul { list-style: none; margin: 0; padding: 0; }
+  .footer__col li { margin-bottom: 11px; }
+  .footer__col a { font-size: 13px; color: #b9b3a8; text-decoration: none; }
+  .footer__col a:hover { color: #fff; }
+  .footer__bottom {
+    border-top: 1px solid rgba(255,255,255,0.09);
+  }
+  .footer__bottom-inner {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 22px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+    font-size: 12px;
+    color: #837e74;
+  }
+  .footer__legal { display: flex; gap: 20px; flex-wrap: wrap; }
+  .footer__legal a { color: #837e74; text-decoration: none; }
+  .footer__legal a:hover { color: #cfc9bf; }
+  .footer__fiction {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(155,28,28,0.16);
+    border: 1px solid rgba(208,106,106,0.35);
+    color: #e7b9b9;
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 11.5px;
+    font-weight: 500;
+  }
+  .footer__fiction .dot { width: 6px; height: 6px; border-radius: 50%; background: #d06a6a; }
+
+  /* ---------- Fin d'article : flou progressif + fondu vers le blanc (façon paywall) ---------- */
+  .tease {
+    position: relative;
+    padding-bottom: 76px;
+  }
+  .tease__veil {
+    position: absolute;
+    left: -6px;
+    right: -6px;
+    top: 0;
+    bottom: 0;
+    z-index: 2;
+    pointer-events: none;
+    /* fondu progressif vers le fond clair */
+    background: linear-gradient(to bottom,
+      rgba(250,250,250,0) 0%,
+      rgba(250,250,250,0.04) 26%,
+      rgba(250,250,250,0.5) 58%,
+      rgba(250,250,250,0.9) 82%,
+      var(--bg) 100%);
+    /* flou progressif : le backdrop-filter est masqué pour n'agir que vers le bas */
+    -webkit-backdrop-filter: blur(3.5px);
+    backdrop-filter: blur(3.5px);
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.20) 30%, rgba(0,0,0,0.7) 58%, #000 80%);
+    mask-image: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.20) 30%, rgba(0,0,0,0.7) 58%, #000 80%);
+  }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 980px) {
+    .layout { grid-template-columns: 1fr; }
+    .sidebar { position: static; max-width: var(--reading); margin: 56px auto 0; }
+    .sidebar__title { margin-top: 0; }
+    .footer__top { grid-template-columns: 1fr 1fr; gap: 32px 24px; }
+  }
+  @media (max-width: 620px) {
+    .masthead__inner { padding: 0 18px; height: 60px; }
+    .brand__tag { display: none; }
+    .nav__link span.nav__icon-label { display: none; }
+    .breadcrumb { padding: 12px 18px; }
+    .breadcrumb .crumb-archives { display: none; }
+    .breadcrumb .sep-archives { display: none; }
+    .layout { padding: 4px 18px 60px; }
+    .byline { flex-wrap: wrap; }
+    .byline__spacer { flex-basis: 100%; height: 0; }
+    .tools { width: 100%; justify-content: flex-start; }
+    .subscribe-cta { padding: 36px 24px; border-radius: 8px; }
+    .footer__top { grid-template-columns: 1fr; }
+    .footer__bottom-inner { flex-direction: column; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+  <!-- Bandeau fiction (discret, en haut) -->
+  <div class="fiction-bar" role="note">
+    <span class="dot" aria-hidden="true"></span>
+    <span><strong>Maquette fictive</strong> — projet étudiant front-end · média parodique · contenu sans valeur informative</span>
+  </div>
+
+  <!-- ===================== HEADER ===================== -->
+  <header class="masthead">
+    <div class="masthead__inner">
+      <a class="brand" href="#" aria-label="L'Édition Nationale — accueil">
+        <span class="brand__logo">L'Édition <span class="accent">Nationale</span></span>
+        <span class="brand__tag">Maquette fictive</span>
+      </a>
+      <nav class="nav" aria-label="Navigation principale">
+        <button class="nav__link" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+          <span class="nav__icon-label">Rechercher</span>
+        </button>
+        <button class="nav__link" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+          <span class="nav__icon-label">Menu</span>
+        </button>
+        <a class="nav__link nav__sub" href="#abonnement">S'abonner</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ===================== BREADCRUMB ===================== -->
+  <nav class="breadcrumb" aria-label="Fil d'ariane">
+    <a href="#">Accueil</a>
+    <span class="sep" aria-hidden="true">›</span>
+    <a href="#">Société</a>
+    <span class="sep sep-archives" aria-hidden="true">›</span>
+    <a class="crumb-archives" href="#">Justice</a>
+    <span class="sep" aria-hidden="true">›</span>
+    <span class="current">Compte rendu d'audience</span>
+  </nav>
+
+  <!-- ===================== LAYOUT ===================== -->
+  <div class="layout">
+
+    <!-- ---------- COLONNE PRINCIPALE ---------- -->
+    <div class="col-main">
+      <article class="reading">
+
+        <!-- En-tête de l'article -->
+        <div class="article-head">
+          <span class="overline">Justice · Compte rendu d'audience</span>
+
+          <!-- ⤵ TITRE ÉDITABLE (pour tester le responsive en direct) -->
+          <h1 class="title" contenteditable="true" spellcheck="false">Casse armé dans un entrepôt francilien : lourdes peines pour les auteurs principaux, cinq ans pour le chauffeur</h1>
+
+          <!-- ⤵ CHAPÔ ÉDITABLE -->
+          <p class="standfirst" contenteditable="true" spellcheck="false">Le tribunal correctionnel a rendu son jugement dans l'affaire du cambriolage violent d'un entrepôt de matériel électronique en région parisienne. Plusieurs membres du groupe, déjà connus de la justice, ont été condamnés à de lourdes peines. Le chauffeur, au casier vierge au moment des faits, a écopé de cinq ans d'emprisonnement.</p>
+
+          <!-- Métadonnées / byline -->
+          <div class="byline">
+            <div class="avatar" aria-hidden="true">CM</div>
+            <div class="byline__meta">
+              <div class="byline__author">Camille Mercier <span class="role">· Service Justice</span></div>
+              <div class="byline__date">Publié le 12 novembre 2025, mis à jour le 14 novembre 2025</div>
+            </div>
+            <div class="byline__spacer"></div>
+            <div class="tools">
+              <div class="tool-group" role="group" aria-label="Taille du texte">
+                <button class="icon-btn text-size-btn" type="button" data-size="down" title="Réduire la taille du texte">A<span>-</span></button>
+                <button class="icon-btn text-size-btn" type="button" data-size="up" title="Augmenter la taille du texte">A<span class="big">+</span></button>
+              </div>
+              <div class="tool-group" role="group" aria-label="Partager">
+                <button class="icon-btn" type="button" title="Partager sur X / Twitter" aria-label="Partager sur Twitter">
+                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24h-6.66l-5.214-6.817-5.966 6.817H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231 5.45-6.231Zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77Z"/></svg>
+                </button>
+                <button class="icon-btn" type="button" title="Partager sur Facebook" aria-label="Partager sur Facebook">
+                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06c0 5.02 3.66 9.18 8.44 9.94v-7.03H7.9v-2.9h2.54V9.85c0-2.51 1.49-3.9 3.78-3.9 1.09 0 2.24.2 2.24.2v2.47h-1.26c-1.24 0-1.63.78-1.63 1.57v1.87h2.78l-.44 2.9h-2.34V22c4.78-.76 8.44-4.92 8.44-9.94Z"/></svg>
+                </button>
+                <button class="icon-btn" type="button" id="copyLink" title="Copier le lien" aria-label="Copier le lien">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Corps de l'article -->
+        <div class="article-body">
+          <p class="lead-para">L'affaire avait commencé comme un vol préparé dans une zone logistique isolée. Elle s'est terminée dans la confusion, sous les sirènes, après des coups de feu et une course-poursuite de plusieurs kilomètres.</p>
+
+          <p>Dans la nuit du 12 au 13 octobre, plusieurs hommes s'étaient introduits dans un entrepôt privé spécialisé dans le stockage de matériel électronique. Selon l'enquête, le groupe avait ciblé le site plusieurs jours auparavant, repérant les horaires de surveillance et les accès secondaires. Deux véhicules avaient été mobilisés : un utilitaire destiné au transport de la marchandise et une voiture chargée d'assurer la fuite.</p>
+
+          <p>Johann Z., alors âgé d'une vingtaine d'années, était au volant de cette seconde voiture. Contrairement aux autres prévenus, il n'était pas entré dans l'entrepôt et n'était pas porteur d'arme. Son rôle, selon l'accusation, consistait à attendre à proximité du site pour récupérer une partie de l'équipe après les faits.</p>
+
+          <p>Mais l'opération a rapidement basculé. Surpris par l'arrivée d'un agent de sécurité, les individus présents dans le bâtiment auraient tenté de précipiter leur sortie. D'après plusieurs éléments du dossier, un premier coup de feu aurait retenti du côté du poste de sécurité, dans des circonstances qui ont longuement été discutées à l'audience. Les auteurs principaux auraient alors répliqué, provoquant un mouvement de panique sur le site.</p>
+
+          <p>Aucun blessé n'a été recensé, mais les tirs ont profondément alourdi le dossier. Alertées par les détonations, les forces de l'ordre sont intervenues rapidement. À l'extérieur, Johann Z. a démarré brusquement avant d'être pris en chasse par une patrouille arrivée sur les lieux. La fuite s'est poursuivie sur plusieurs kilomètres avant l'abandon du véhicule dans une commune voisine.</p>
+
+          <!-- Image d'illustration -->
+          <figure class="illus">
+            <div class="illus__frame">
+              <span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-4.5-4.5L7 21"/></svg>
+                Emplacement image — 16:9
+              </span>
+            </div>
+            <figcaption>
+              Le palais de justice où s'est tenue l'audience (illustration). <span class="credit">Crédit : Photographe fictif / L'Édition Nationale (maquette).</span>
+            </figcaption>
+          </figure>
+
+          <p>À la barre, Johann Z. a reconnu avoir conduit la voiture utilisée pour quitter les lieux, mais a contesté avoir eu connaissance de la présence d'armes.</p>
+
+          <!-- Citation mise en exergue -->
+          <blockquote class="pullquote">
+            <p>« Quand j'ai entendu les coups de feu, j'ai paniqué. Je n'ai pas réfléchi. J'ai juste démarré. »</p>
+            <cite>— Johann Z., à la barre</cite>
+          </blockquote>
+
+          <p>Le procureur a toutefois rappelé que le rôle du chauffeur restait central dans ce type d'opération. « Il n'est pas entré dans l'entrepôt, il n'a pas tiré, mais il a permis la fuite. Sans conducteur, il n'y a pas de sortie organisée », a-t-il souligné dans ses réquisitions.</p>
+
+          <p>Les principaux auteurs, déjà condamnés par le passé pour des faits de vols aggravés et de violences, ont écopé des peines les plus lourdes, allant de huit à douze ans d'emprisonnement. Le tribunal a retenu leur rôle moteur dans la préparation des faits, leur présence à l'intérieur du bâtiment et leur implication directe dans les tirs.</p>
+
+          <p>Johann Z. a, quant à lui, été condamné à cinq ans d'emprisonnement. Le tribunal a tenu compte de son rôle de chauffeur et de son absence d'antécédents, mais a sanctionné sa participation active à la fuite.</p>
+
+          <h2>Une réinsertion par la prévention</h2>
+
+          <p>Après avoir purgé trois années de détention ferme, un comportement jugé exemplaire a permis au jeune homme de bénéficier d'un aménagement de peine. Aujourd'hui, il affirme avoir définitivement coupé les ponts avec son ancien entourage et a trouvé un nouveau sens à son parcours au sein des structures sociales de la région.</p>
+
+          <!-- Fin d'article : flou progressif + fondu vers le blanc (façon paywall « Le Monde ») -->
+          <div class="tease">
+            <p>Il intervient désormais très régulièrement dans des maisons de jeunesse pour faire de la prévention. Face à des adolescents parfois tentés par l'argent facile ou happés par l'engrenage des rixes inter-quartiers, il utilise son propre vécu pour désamorcer les conflits.</p>
+
+            <p>« Je pensais être juste le chauffeur. En réalité, j'étais dans la même voiture, dans la même histoire, et j'ai payé le prix », confie-t-il désormais à ceux qu'il met en garde. « La prison n'a rien de glorieux. Aujourd'hui, mon rôle, c'est de leur faire comprendre qu'une mauvaise décision ou une embrouille de quartier ne vaut pas de gâcher sa liberté. »</p>
+
+            <div class="tease__veil" aria-hidden="true"></div>
+          </div>
+        </div>
+
+        <!-- Encart fin d'article -->
+        <section class="subscribe-cta" id="abonnement">
+          <div class="subscribe-cta__kicker">Article réservé aux abonnés</div>
+          <h3>Lisez la suite de cette enquête</h3>
+          <p>La fin de cet article est réservée à nos abonnés. Abonnez-vous pour la lire en intégralité et soutenir une rédaction indépendante. (Maquette fictive — aucun contenu réel au-delà du fondu.)</p>
+          <a class="btn-primary" href="#">S'abonner à partir de 1 € (fictif)</a>
+          <div class="subscribe-cta__note">Sans engagement · Aucun paiement réel · Démonstration</div>
+        </section>
+
+      </article>
+    </div>
+
+    <!-- ---------- SIDEBAR ---------- -->
+    <aside class="sidebar" aria-label="Articles liés">
+      <h3 class="sidebar__title">Dans la même rubrique</h3>
+      <ul class="related-list">
+        <li>
+          <a class="related" href="#">
+            <span class="related__thumb" aria-hidden="true"></span>
+            <span class="related__body">
+              <span class="related__cat">Justice</span>
+              <span class="related__title">Aménagements de peine : ce que change la réforme pénitentiaire</span>
+              <span class="related__time">Il y a 3 jours · 6 min</span>
+            </span>
+          </a>
+        </li>
+        <li>
+          <a class="related" href="#">
+            <span class="related__thumb" aria-hidden="true"></span>
+            <span class="related__body">
+              <span class="related__cat">Décryptage</span>
+              <span class="related__title">Comprendre la responsabilité du complice en 3 minutes</span>
+              <span class="related__time">Il y a 5 jours · 4 min</span>
+            </span>
+          </a>
+        </li>
+        <li>
+          <a class="related" href="#">
+            <span class="related__thumb" aria-hidden="true"></span>
+            <span class="related__body">
+              <span class="related__cat">Enquête</span>
+              <span class="related__title">Prévention en quartiers : ces anciens détenus qui témoignent</span>
+              <span class="related__time">Il y a 1 semaine · 9 min</span>
+            </span>
+          </a>
+        </li>
+        <li>
+          <a class="related" href="#">
+            <span class="related__thumb" aria-hidden="true"></span>
+            <span class="related__body">
+              <span class="related__cat">Portrait</span>
+              <span class="related__title">Sortir de la délinquance : les parcours qui réussissent</span>
+              <span class="related__time">Il y a 2 semaines · 7 min</span>
+            </span>
+          </a>
+        </li>
+      </ul>
+
+      <div class="sidebar__promo">
+        <h4>La lettre du soir</h4>
+        <p>Recevez chaque jour l'essentiel de l'actualité, sélectionné par la rédaction. (Inscription fictive.)</p>
+        <a class="mini-btn" href="#">S'inscrire</a>
+      </div>
+    </aside>
+
+  </div>
+
+  <!-- ===================== FOOTER ===================== -->
+  <footer class="site-footer">
+    <div class="footer__top">
+      <div class="footer__brand">
+        <span class="brand__logo">L'Édition <span class="accent">Nationale</span></span>
+        <p>Maquette d'intégration éditoriale réalisée à des fins pédagogiques. Ce média n'existe pas et aucun contenu publié ici n'a de valeur informative.</p>
+      </div>
+      <div class="footer__col">
+        <h5>Rubriques</h5>
+        <ul>
+          <li><a href="#">Société</a></li>
+          <li><a href="#">Économie</a></li>
+          <li><a href="#">International</a></li>
+          <li><a href="#">Culture</a></li>
+        </ul>
+      </div>
+      <div class="footer__col">
+        <h5>Le journal</h5>
+        <ul>
+          <li><a href="#">La rédaction</a></li>
+          <li><a href="#">Nous contacter</a></li>
+          <li><a href="#">S'abonner</a></li>
+          <li><a href="#">Newsletters</a></li>
+        </ul>
+      </div>
+      <div class="footer__col">
+        <h5>Suivre</h5>
+        <ul>
+          <li><a href="#">X / Twitter</a></li>
+          <li><a href="#">Facebook</a></li>
+          <li><a href="#">LinkedIn</a></li>
+          <li><a href="#">Flux RSS</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <div class="footer__bottom-inner">
+        <div class="footer__legal">
+          <a href="#">Mentions légales</a>
+          <a href="#">CGU</a>
+          <a href="#">Politique de confidentialité</a>
+          <a href="#">Cookies</a>
+          <span>© 2025 L'Édition Nationale (fictif)</span>
+        </div>
+        <span class="footer__fiction"><span class="dot" aria-hidden="true"></span>Maquette fictive — projet étudiant, média parodique</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Toast « lien copié » -->
+  <div class="copied-toast" id="toast" role="status" aria-live="polite">Lien copié dans le presse-papiers</div>
+
+  <script>
+    (function () {
+      "use strict";
+
+      /* ---- Taille du texte (A- / A+) ---- */
+      var root = document.documentElement;
+      var MIN = 0.85, MAX = 1.4, STEP = 0.08;
+      function currentScale() {
+        var v = parseFloat(getComputedStyle(root).getPropertyValue('--article-scale')) || 1;
+        return v;
+      }
+      document.querySelectorAll('.text-size-btn').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var s = currentScale();
+          s += (btn.dataset.size === 'up') ? STEP : -STEP;
+          s = Math.min(MAX, Math.max(MIN, Math.round(s * 100) / 100));
+          root.style.setProperty('--article-scale', s);
+        });
+      });
+
+      /* ---- Copier le lien ---- */
+      var toast = document.getElementById('toast');
+      var toastTimer;
+      function showToast(msg) {
+        toast.textContent = msg;
+        toast.classList.add('show');
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(function () { toast.classList.remove('show'); }, 2200);
+      }
+      var copyBtn = document.getElementById('copyLink');
+      copyBtn.addEventListener('click', function () {
+        var url = window.location.href;
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(url).then(
+            function () { showToast('Lien copié dans le presse-papiers'); },
+            function () { showToast('Lien : ' + url); }
+          );
+        } else {
+          showToast('Lien : ' + url);
+        }
+      });
+
+      /* ---- Boutons de partage (factices, sans navigation réelle) ---- */
+      document.querySelectorAll('.icon-btn[title^="Partager"]').forEach(function (b) {
+        b.addEventListener('click', function () {
+          showToast('Partage simulé (maquette) — ' + b.getAttribute('title'));
+        });
+      });
+
+      /* ---- Champs éditables : nettoyage du placeholder au premier focus ---- */
+      document.querySelectorAll('[contenteditable="true"]').forEach(function (el) {
+        el.addEventListener('focus', function once() {
+          var t = el.textContent.trim();
+          if (t.charAt(0) === '[' && t.charAt(t.length - 1) === ']') {
+            el.textContent = '';
+          }
+          el.removeEventListener('focus', once);
+        });
+      });
+    })();
+  </script>
+
+</body>
+</html>
